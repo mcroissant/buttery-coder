@@ -1,6 +1,9 @@
 # Client-server paradigm
 
 
+## What is a client server interaction
+
+
 
 ```mermaid
 sequenceDiagram
@@ -12,7 +15,6 @@ sequenceDiagram
   Server-->>Client: Great!
 ```
 
-## What is a client server interaction
 
 This basic interaction is based on requests and responses being exchanged between the client and the server. The client is usually the one initiating the interaction with the server knowing in advance how to contact it.
 
@@ -71,9 +73,13 @@ The above sequence shows a simplified view on what is hapenning in your browser 
 2. The Server returns the web page to you
 
     Html web pages are often containing references to other resources that need to be loaded for the page to be displayed, this can be images, scripts that will be executed in your browser and other type of resources.
+
 3. You browser is now requesting other resources that are required by the page like the user picture
+
 4. Server return the picture
+
 5. You browser requests a javascript file most likely containing some dynamic behavior the page will have
+
 6. The server returns the required script
 
 These interactions will continue on and on until enough resources have been exchanged for the page to start loading, those are called synchronuous loading as the web page is not starting to be rendered until those resources are returned. This can lead to long loading time and that's why most modern web pages implement some asynchronuous loading behaviors to reduce the time necessary for the page to start to display. 

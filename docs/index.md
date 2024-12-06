@@ -1,17 +1,13 @@
-# Welcome to Buttery Code
+# Welcome 
 
+This is a small space where I try to collect some of the content, thoughts and learning I have throughout the years. 
 
+*I hope you'll find insightful content in here and that I will give back a tiny share of the knowledge that has been shared with me...*
 
-## Commands
+## Main content
 
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs -h` - Print help message and exit.
+You'll find two things in here : 
 
-## Project layout
+- blog post which are just a collection of topics of interests through out the years.
+- courses which are more structured content aimed at sharing on a specific domain
 
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
