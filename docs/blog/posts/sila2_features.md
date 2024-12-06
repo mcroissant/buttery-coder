@@ -28,7 +28,7 @@ to standardize equipment interface over the industry
 ![Image title](../images/sila2_4.webp)
 
 As abstract as this word may be, here we are talking about a well-defined behavior or ability of laboratory equipment. This image above shows all the components of a feature definition.
-
+<!-- more -->
 ## Who can create it?
 I would say describing a feature can be down given a minimal XML knowledge which is a human-readable data format.
 

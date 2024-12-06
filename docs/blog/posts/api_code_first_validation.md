@@ -19,6 +19,8 @@ In a matter of a few lines, you have a simple CRUD API up and running. But thatâ
 
 You would think that the code-first approach and auto-generation of your OpenAPI specification got you covered. Sadly most of the time your specification will be invalid.
 
+<!-- more -->
+
 The root cause for your invalid specs is usually quite simple, the OpenAPI schema validation was not implemented in the annotation you use in your code. In itself, the invalid schema wonâ€™t prevent you from serving and consuming the API but it will prevent you from using the whole set of open source tools that are relying on it like the one in this collection of links: [OpenApi Tools](https://openapi.tools/)
 
 

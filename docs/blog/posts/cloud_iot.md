@@ -21,6 +21,8 @@ Wouldn’t it be nice to see your field data in (near) real-time? To be able to 
 
 We all have of favorite OPC server depending on the task, but for me it is Kepware. The nice thing about OPC servers is usually that they cover way more communication protocols and allow us to connect to otherwise non-OPC compatible machines.
 
+<!-- more -->
+
 Now with all these collecting capabilities, we need to be able to store, analyze, and display such data. There is of course some powerful tool to do this such as historians like Osi Pi, but what would be nice is if we could set up as scalable solution within minutes with unlimited integration and that’s where cloud solution comes handy.
 
 Luckily for us, Kepware got us covered and is already providing an IoT Gateway that will allow us to choose tag which should be forwarded to the cloud.

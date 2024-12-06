@@ -20,11 +20,12 @@ Ever heard about SiLA ? It stands for Standard in Lab Automation, and if you’r
 In a perfect world all your equipment would provide the same way of controlling the functions and accessing the data. Integrating the equipment into your IT landscape would become both consistent and less tedious.
 
 Sadly, until now, several issues may occur :
+<!-- more -->
 
-Your equipment was not designed to be integrated into any IT system and you are left with no choice than to live with it or purchase new equipment
-Your equipment has some kind of interface but very few of its capacities are exposed to interact with. You may not even be able to extract the data it produces
-In the best case, you have a set of integration points covering most of the device functionalities, well documented and written in modern, non-proprietary language
-Unfortunately, even if you reach the best case scenario you would still have to write a custom piece of software for each and every equipment you have. It would result in a huge library of disparate implementations for various equipment with no common ground.
+- Your equipment was not designed to be integrated into any IT system and you are left with no choice than to live with it or purchase new equipment
+- Your equipment has some kind of interface but very few of its capacities are exposed to interact with. You may not even be able to extract the data it produces
+- In the best case, you have a set of integration points covering most of the device functionalities, well documented and written in modern, non-proprietary language
+- Unfortunately, even if you reach the best case scenario you would still have to write a custom piece of software for each and every equipment you have. It would result in a huge library of disparate implementations for various equipment with no common ground.
 
 ## Solving the integration issues with SiLA 2
 SiLA 2 is a communication standard for laboratory instruments, such as readers, liquid handling robots and chromatography and other analytical equipment. However, with the new 2nd version of SiLA, it can also be used as a communication protocol between any microservices, even completely virtual. This makes it possible to track, monitor and even remote control assets, which makes it also capable in manufacturing use cases.

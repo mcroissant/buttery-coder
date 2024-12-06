@@ -22,6 +22,7 @@ Luckily for us, Kepware got us covered and is already providing an IoT Gateway t
 
 ![Image title](../images/iot_2.webp)
 
+<!-- more -->
 
 The first step is to download and set up your kepware server, you can download it by requesting it at https://www.kepware.com/en-us/products/kepserverex/ Once installed if you open the Kepware configuration tool you will find existing tags in there like the simulation examples.
 
