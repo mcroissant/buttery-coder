@@ -1,0 +1,12 @@
+site_name: Matthieu Croissant Courses
+site_url: https://mydomain.org/mysite
+theme:
+  name: material
+  features:
+    - navigation.instant
+    - navigation.path
+    - toc.integrate 
+plugins:
+    - with-pdf
+extra_css:                 
+    - css/extra.css      
