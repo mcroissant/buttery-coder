@@ -1,6 +1,6 @@
-# Welcome to API 101
+# Welcome to Buttery Code
 
-For full documentation visit [mkdocs.org](https://www.mkdocs.org).
+
 
 ## Commands
 

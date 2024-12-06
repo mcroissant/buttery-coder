@@ -2,11 +2,27 @@ site_name: Matthieu Croissant Courses
 site_url: https://mydomain.org/mysite
 theme:
   name: material
+  icon:
+    admonition:
+      try-it: material/alert-decagram
   features:
     - navigation.instant
-    - navigation.path
-    - toc.integrate 
+    - navigation.instant.prefetch
+    - navigation.tracking
+    - toc.follow
+    - content.code.copy
 plugins:
-    - with-pdf
+  - search
+  - blog
+
 extra_css:                 
     - css/extra.css      
+markdown_extensions:
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
