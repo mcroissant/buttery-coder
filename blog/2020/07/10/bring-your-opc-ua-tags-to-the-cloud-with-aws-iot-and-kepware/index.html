@@ -1,0 +1,1179 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://mydomain.org/mysite/blog/2020/07/10/bring-your-opc-ua-tags-to-the-cloud-with-aws-iot-and-kepware/">
+      
+      
+        <link rel="prev" href="../sila-2-going-fancy-with-features/">
+      
+      
+        <link rel="next" href="../your-code-first-api-needs-validation/">
+      
+      
+      <link rel="icon" href="../../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.49">
+    
+    
+      
+        <title>Bring your OPC-UA tags to the cloud with AWS IoT and Kepware - Buttery Coder</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../assets/stylesheets/main.6f8fc17f.min.css">
+      
+      
+  
+  
+    
+    
+  
+  
+  <style>:root{--md-admonition-icon--try-it:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m23 12-2.44-2.78.34-3.68-3.61-.82-1.89-3.18L12 3 8.6 1.54 6.71 4.72l-3.61.81.34 3.68L1 12l2.44 2.78-.34 3.69 3.61.82 1.89 3.18L12 21l3.4 1.46 1.89-3.18 3.61-.82-.34-3.68zm-10 5h-2v-2h2zm0-4h-2V7h2z"/></svg>');}</style>
+
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../css/extra.css">
+    
+    <script>__md_scope=new URL("../../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-47BQLGYFBB"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-47BQLGYFBB",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-47BQLGYFBB",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#bring-your-opc-ua-tags-to-the-cloud-with-aws-iot-and-kepware" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../../.." title="Buttery Coder" class="md-header__button md-logo" aria-label="Buttery Coder" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Buttery Coder
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Bring your OPC-UA tags to the cloud with AWS IoT and Kepware
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../../.." title="Buttery Coder" class="md-nav__button md-logo" aria-label="Buttery Coder" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Buttery Coder
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Welcome
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Blog
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Blog
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      <a href="../../../../" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Archive
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            Archive
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2024/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2024
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2020/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2020
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2019/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2019
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Categories
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            Categories
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    api
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/automation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    automation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/ci/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ci
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/cicd/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    cicd
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/cloud/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    cloud
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/iot/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    iot
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/laboratory/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    laboratory
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/openapi/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    openapi
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/yaml/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    yaml
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Courses
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Courses
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Apis
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            Apis
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_1_1" id="__nav_3_1_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Introduction
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_1_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_1_1">
+            <span class="md-nav__icon md-icon"></span>
+            Introduction
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../courses/apis/Introduction/01_what_api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    What's an API
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../courses/apis/Introduction/02_client_server/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Client-server paradigm
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../courses/apis/Introduction/03_network_basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Network basics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../courses/apis/Introduction/05_http/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HTTP Protocol
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#connecting-your-on-premises-opc-server-to-the-cloud" class="md-nav__link">
+    <span class="md-ellipsis">
+      Connecting your on-premises OPC server to the cloud
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consuming-the-opc-tags-and-computing-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Consuming the OPC tags and computing metrics
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#provide-real-time-dashboarding-on-top-of-your-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Provide real time dashboarding on top of your data
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+  <div class="md-content md-content--post" data-md-component="content">
+    <div class="md-sidebar md-sidebar--post" data-md-component="sidebar" data-md-type="navigation">
+      <div class="md-sidebar__scrollwrap">
+        <div class="md-sidebar__inner md-post">
+          <nav class="md-nav md-nav--primary">
+            <div class="md-post__back">
+              <div class="md-nav__title md-nav__container">
+                <a href="../../../../" class="md-nav__link">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+                  <span class="md-ellipsis">
+                    Back to index
+                  </span>
+                </a>
+              </div>
+            </div>
+            
+              <div class="md-post__authors md-typeset">
+                
+                  <div class="md-profile md-post__profile">
+                    <span class="md-author md-author--long">
+                      <img src="https://avatars.githubusercontent.com/u/5605097?v=4" alt="Matthieu Croissant">
+                    </span>
+                    <span class="md-profile__description">
+                      <strong>
+                        
+                          Matthieu Croissant
+                        
+                      </strong>
+                      <br>
+                      Creator
+                    </span>
+                  </div>
+                
+              </div>
+            
+            <ul class="md-post__meta md-nav__list">
+              <li class="md-nav__item md-nav__item--section">
+                <div class="md-post__title">
+                  <span class="md-ellipsis">
+                    Metadata
+                  </span>
+                </div>
+                <nav class="md-nav">
+                  <ul class="md-nav__list">
+                    <li class="md-nav__item">
+                      <div class="md-nav__link">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5z"/></svg>
+                        <time datetime="2020-07-10 00:00:00+00:00" class="md-ellipsis">July 10, 2020</time>
+                      </div>
+                    </li>
+                    
+                    
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 3v15h3V3zm3 2 4 13 3-1-4-13zM5 5v13h3V5zM3 19v2h18v-2z"/></svg>
+                          <span class="md-ellipsis">
+                            in
+                            
+                              <a href="../../../../category/iot/">iot</a>, 
+                              <a href="../../../../category/cloud/">cloud</a></span>
+                        </div>
+                      </li>
+                    
+                    
+                      
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"/></svg>
+                          <span class="md-ellipsis">
+                            
+                              9 min read
+                            
+                          </span>
+                        </div>
+                      </li>
+                    
+                  </ul>
+                </nav>
+              </li>
+            </ul>
+          </nav>
+          
+        </div>
+      </div>
+    </div>
+    <article class="md-content__inner md-typeset">
+      
+        
+
+
+<h1 id="bring-your-opc-ua-tags-to-the-cloud-with-aws-iot-and-kepware">Bring your OPC-UA tags to the cloud with AWS IoT and Kepware</h1>
+<p>Today I would like to introduce you to a set of nice functionalities of both Kepware and AWS.</p>
+<p>We all have of favorite OPC server depending on the task, but for me, it is Kepware without a doubt. No, I’m not sponsored, I just love it! The nice thing about OPC servers is usually that they cover way more communication protocols and allow us to connect to otherwise non-OPC compatible machines.</p>
+<h2 id="connecting-your-on-premises-opc-server-to-the-cloud">Connecting your on-premises OPC server to the cloud</h2>
+<p>Now with all these collecting capabilities, we need to be able to store, analyze, and display such data. There is of course some powerful tool to do this such as historians like Osi Pi, but what would be nice is if we could set up as a scalable solution within minutes with unlimited integration and that’s where cloud solution comes handy.</p>
+<p>Luckily for us, Kepware got us covered and is already providing an IoT Gateway that will allow us to choose tag which should be forwarded to the cloud.</p>
+<p><img alt="Image title" src="../../../../images/iot_2.webp" /></p>
+<!-- more -->
+
+<p>The first step is to download and set up your kepware server, you can download it by requesting it at https://www.kepware.com/en-us/products/kepserverex/ Once installed if you open the Kepware configuration tool you will find existing tags in there like the simulation examples.</p>
+<p><img alt="Image title" src="../../../../images/iot_tutorial_1.webp" /></p>
+<p>We now have an OPC server set up on our machine we are ready to tackle the cloud part. To win some time and space I’ll consider you already have your AWS account. Go to Services -&gt; AWS IoT Core and click on the get started button, you should then be redirected to this welcome page.</p>
+<p><img alt="Image title" src="../../../../images/iot_tutorial_2.webp" /></p>
+<p>For the following part of setting up AWS IoT and Kepware certificates for MQTT communication, I point you to this fine how-to: https://steveunofficialguide.wordpress.com/sending-kepware-data-to-aws-iot-hub/</p>
+<p>If you did everything alright and added some more tags to your IoT Gateway in Kepware like the simulated tags you should be able to do like me and use the Test interface from AWS IoT to look into the MQTT topic and see your tags being updated</p>
+<p><img alt="Image title" src="../../../../images/iot_tutorial_3.webp" /></p>
+<p>The next task is to set up a Kinesis stream for forwarding the opc tag values to the analytic component of our solution. Go to Services -&gt; Kinesis -&gt; Data Streams -&gt; Create Kinesis stream</p>
+<p><img alt="Image title" src="../../../../images/iot_tutorial_4.webp" /></p>
+<p>As this is just a demo let’s keep things simple and not talk about shard yet. Now that we have a Kinesis stream we can ask our IoT service to forward everything there.</p>
+<p>We go back to AWS IoT Service -&gt; Act -&gt; Create a rule. Give you rule a name</p>
+<p><img alt="Image title" src="../../../../images/iot_tutorial_5.webp" /></p>
+<p>Give your rule a select statement, I kept it very generic because I have only a single opc tag forwarded but you can play around and filter your data before it gets to the analytic side of thing</p>
+<p><img alt="Image title" src="../../../../images/iot_tutorial_6.webp" /></p>
+<p>Now we will plug this action to our Kinesis stream, click on Add action button and select Kinesis stream, then find back your previously created stream</p>
+<p><img alt="Image title" src="../../../../images/iot_tutorial_7.webp" /></p>
+<p>You can now complete the IoT rule creation. To see if you’re alright you can go to the Kinesis stream monitoring tab to see incoming messages from your kepware installation</p>
+<p><img alt="Image title" src="../../../../images/iot_tutorial_8.webp" /></p>
+<h2 id="consuming-the-opc-tags-and-computing-metrics">Consuming the OPC tags and computing metrics</h2>
+<p>In the last section, we have set up our data flow from opc tags up to a Kinesis data stream. The data is there and is waiting for us to process it.</p>
+<p><img alt="Image title" src="../../../../images/iot_tutorial_9.webp" /></p>
+<p>We will now process our opc tags and create some metrics over them, to later on, display those. To do so we will be using AWS Kinesis analytics. It lets you process your data streams using a SQL query like language with additional capabilities like the time windows that we will use.</p>
+<p>But let’s first create our Kinesis analytics application.</p>
+<p>Go to AWS -&gt; Services -&gt; Kinesis -&gt; Data analytics -&gt; Create applicaiton</p>
+<p><img alt="Image title" src="../../../../images/iot_tutorial_10.webp" /></p>
+<p>Your application is created and you can now setup you kinesis stream as an input for your analytics application</p>
+<p><img alt="Image title" src="../../../../images/iot_tutorial_11.webp" /></p>
+<p>Select your stream as an input and leave everything else as is</p>
+<p><img alt="Image title" src="../../../../images/iot_tutorial_12.webp" /></p>
+<p>In the bottom of the page you will find a button to discover schema click on it and if you have enough data AWS will automatically deduct SQL schema from the MQTT messages</p>
+<p><img alt="Image title" src="../../../../images/iot_tutorial_13.webp" /></p>
+<p>Once done AWS will show you a success message with a sample of your data once put into a tabular format</p>
+<p><img alt="Image title" src="../../../../images/iot_tutorial_14.webp" /></p>
+<p>You can now save and continue, your data is there and the schema is ready to be acted upon we can now tackle the real analytic part of this setup</p>
+<p><img alt="Image title" src="../../../../images/iot_tutorial_15.webp" /></p>
+<p>Click on the go to SQL editor section and start the application. AWS provides a nice set of SQL query samples over there that could let you compute most of your desired use cases. I could go over a lot of functionalities of this kinesis analytics service once there, but as I’m not yet an expert into I’ll leave it for another article. I have a lot of idea on how to use this tool but the most straight forward to me would be KPI computation like OEE or alerting over production line stop detecting the place where it stopped based on saturation bits</p>
+<p>For this demo, I will limit myself to a simple average over the last 10 seconds over a tag simulating a sinus function. I can now click save and run and will get a glimpse into the generated result</p>
+<p><img alt="Image title" src="../../../../images/iot_tutorial_16.webp" /></p>
+<p>We are now done with setting up this 2nd part of the solution. We have data monitored through OPC that is passed in near real-time to our IoT Core which itself redirects it to a Kinesis Data Stream that gets processed by our Kinesis analytics platform.</p>
+<p>That makes a lot of pipes to bring our data from one end to another, however as your solution would get more complex you would find benefits in going through all of this as you can redirect your data flow from one part to another and monitor all of them using AWS tooling.</p>
+<h2 id="provide-real-time-dashboarding-on-top-of-your-data">Provide real time dashboarding on top of your data</h2>
+<p>We now are about to complete the solution with a powerful and yet simple (and free)dashboarding solution called Kibana which is provided on top of elastic search.</p>
+<p><img alt="Image title" src="../../../../images/iot_tutorial_17.webp" /></p>
+<p>This is the type of dashboard we are aiming for, the goal of this last part that would allow us to go from opc tags to actual graphics that could be shared and displayed publicly.</p>
+<p>But we still have a bit of configuration to complete like creating our Elasticsearch service. First go to services -&gt; Elasticsearch -&gt; Create a new domain.</p>
+<p><img alt="Image title" src="../../../../images/iot_tutorial_18.webp" /></p>
+<p>To keep things simple I went for a development and testing deployment, this also helps to keep the cost of this experiment down.</p>
+<p><img alt="Image title" src="../../../../images/iot_tutorial_19.webp" /></p>
+<p>Give your domain a name and pick the right instance type, here I went for a t2.small instance again to keep cost low. You can of course play with larger data set and so set up a larger instance if needed. Keep the rest as is and click next. You will have to set the rest of the parameters for access yourself, you can of course set everything to the public if you run a short time experiment but this comes with a high risk as pointed out by amazon.</p>
+<p>You can review your settings and confirm the Elasticsearch creation and go for a coffee as you wait for it to be up and running…</p>
+<p><img alt="Image title" src="../../../../images/iot_tutorial_20.webp" /></p>
+<p>Once up and running you can click on the Create Firehose Delivery Stream button and once again on create delivery stream. Give you stream a name and leave everything as is until destination selection.</p>
+<p><img alt="Image title" src="../../../../images/iot_tutorial_21.webp" /></p>
+<p>Select Elasticsearch service as a destination. You then need to select your previously created elasticsearch service an give an index name and type name</p>
+<p><img alt="Image title" src="../../../../images/iot_tutorial_22.webp" /></p>
+<p>You will have to create also an S3 backup which will be used to save the failed records so that you could recover in case of error or bug in your application. Click next and create a new IAM role if needed then complete the firehose creation. Again it might take some time to complete but stay tuned, one more step and we can finally start the dashboarding work.</p>
+<p>Now your elasticsearch is ready and your kinesis firehose also but no data is coming in yet, that’s why we will connect the Kinesis analytics to the firehose.</p>
+<p><img alt="Image title" src="../../../../images/iot_tutorial_23.webp" /></p>
+<p>Go back to your kinesis analytics application and click on Connect to a destination.</p>
+<p><img alt="Image title" src="../../../../images/iot_tutorial_24.webp" /></p>
+<p>Setup the right firehose destination stream and your in-application stream which is the one created through the SQL query. Leave the rest as is and click on save and continue.</p>
+<p><img alt="Image title" src="../../../../images/iot_tutorial_25.webp" /></p>
+<p>After some time you can go into your Kinesis firehose and the monitoring tab to see if data is flowing</p>
+<p><img alt="Image title" src="../../../../images/iot_tutorial_26.webp" /></p>
+<p>You can also check your elasticsearch service and the index you create, you should see that some data is there and that the structure has been detected.</p>
+<p>We are now done with the AWS service setup and can finally grab the fruit of all our work and display those data. If you into your elasticsearch service you can find the Kibana link that we need to start setting the dashboards.</p>
+<p>Once in go to management -&gt; index pattern</p>
+<p><img alt="Image title" src="../../../../images/iot_tutorial_27.webp" /></p>
+<p>Let’s create our index pattern and let kibana detect our data type</p>
+<p><img alt="Image title" src="../../../../images/iot_tutorial_28.webp" /></p>
+<p>Your result should somehow look like above, we have yet a small thing to do and it’s setting a datetime field as for now we only have a Unix timestamp as a number.</p>
+<p><img alt="Image title" src="../../../../images/iot_tutorial_29.webp" /></p>
+<p>Go to the scripted field tab and configure your scripted field as above.</p>
+<p><img alt="Image title" src="../../../../images/iot_tutorial_30.webp" />
+<img alt="Image title" src="../../../../images/iot_tutorial_31.webp" /></p>
+<p>OK, time for some rendering. Go to visualize and create some visualization. Let’s first create a simple line chart and select the opc index.</p>
+<p><img alt="Image title" src="../../../../images/iot_tutorial_32.webp" /></p>
+<p>Configure your Y-axis as above and you X-axis as below</p>
+<p><img alt="Image title" src="../../../../images/iot_tutorial_33.webp" /></p>
+<p>Click the run button and just enjoy your first near-real-time opc value visualization.</p>
+<p><img alt="Image title" src="../../../../images/iot_tutorial_34.webp" /></p>
+<p>That was a long tutorial and we are only scratching the surface of what can be done here with Kibana and Kinesis Analytics. That could be a nice follow up if I find use cases internally in my company or outside who knows.</p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+
+
+  
+
+
+
+      
+    </article>
+  </div>
+
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../../../../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.tracking", "toc.follow", "content.code.copy"], "search": "../../../../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../../../../assets/javascripts/bundle.88dd0f4e.min.js"></script>
+      
+    
+  </body>
+</html>

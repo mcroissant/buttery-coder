@@ -1,0 +1,1230 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://mydomain.org/mysite/blog/2019/10/29/sila-2-hands-on--bringing-automation-to-the-laboratory/">
+      
+      
+        <link rel="prev" href="../../../04/09/real-time-opc-ua-tags-monitoring-in-the-cloud-with-aws-iot/">
+      
+      
+        <link rel="next" href="../../../../2020/07/10/sila-2-going-fancy-with-features/">
+      
+      
+      <link rel="icon" href="../../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.49">
+    
+    
+      
+        <title>SiLA 2 hands on : bringing automation to the laboratory - Buttery Coder</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../assets/stylesheets/main.6f8fc17f.min.css">
+      
+      
+  
+  
+    
+    
+  
+  
+  <style>:root{--md-admonition-icon--try-it:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m23 12-2.44-2.78.34-3.68-3.61-.82-1.89-3.18L12 3 8.6 1.54 6.71 4.72l-3.61.81.34 3.68L1 12l2.44 2.78-.34 3.69 3.61.82 1.89 3.18L12 21l3.4 1.46 1.89-3.18 3.61-.82-.34-3.68zm-10 5h-2v-2h2zm0-4h-2V7h2z"/></svg>');}</style>
+
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../css/extra.css">
+    
+    <script>__md_scope=new URL("../../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-47BQLGYFBB"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-47BQLGYFBB",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-47BQLGYFBB",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#sila-2-hands-on-bringing-automation-to-the-laboratory" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../../.." title="Buttery Coder" class="md-header__button md-logo" aria-label="Buttery Coder" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Buttery Coder
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              SiLA 2 hands on : bringing automation to the laboratory
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../../.." title="Buttery Coder" class="md-nav__button md-logo" aria-label="Buttery Coder" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Buttery Coder
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Welcome
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Blog
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Blog
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      <a href="../../../../" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Archive
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            Archive
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2024/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2024
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2020/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2020
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2019/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2019
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Categories
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            Categories
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    api
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/automation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    automation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/ci/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ci
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/cicd/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    cicd
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/cloud/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    cloud
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/iot/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    iot
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/laboratory/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    laboratory
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/openapi/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    openapi
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/yaml/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    yaml
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Courses
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Courses
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Apis
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            Apis
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_1_1" id="__nav_3_1_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Introduction
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_1_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_1_1">
+            <span class="md-nav__icon md-icon"></span>
+            Introduction
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../courses/apis/Introduction/01_what_api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    What's an API
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../courses/apis/Introduction/02_client_server/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Client-server paradigm
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../courses/apis/Introduction/03_network_basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Network basics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../courses/apis/Introduction/05_http/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HTTP Protocol
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#lets-set-the-scene" class="md-nav__link">
+    <span class="md-ellipsis">
+      Let’s set the scene
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#solving-the-integration-issues-with-sila-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Solving the integration issues with SiLA 2
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#client-server-concept" class="md-nav__link">
+    <span class="md-ellipsis">
+      Client - Server concept
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#feature-definitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Feature definitions
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+  <div class="md-content md-content--post" data-md-component="content">
+    <div class="md-sidebar md-sidebar--post" data-md-component="sidebar" data-md-type="navigation">
+      <div class="md-sidebar__scrollwrap">
+        <div class="md-sidebar__inner md-post">
+          <nav class="md-nav md-nav--primary">
+            <div class="md-post__back">
+              <div class="md-nav__title md-nav__container">
+                <a href="../../../../" class="md-nav__link">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+                  <span class="md-ellipsis">
+                    Back to index
+                  </span>
+                </a>
+              </div>
+            </div>
+            
+              <div class="md-post__authors md-typeset">
+                
+                  <div class="md-profile md-post__profile">
+                    <span class="md-author md-author--long">
+                      <img src="https://avatars.githubusercontent.com/u/5605097?v=4" alt="Matthieu Croissant">
+                    </span>
+                    <span class="md-profile__description">
+                      <strong>
+                        
+                          Matthieu Croissant
+                        
+                      </strong>
+                      <br>
+                      Creator
+                    </span>
+                  </div>
+                
+              </div>
+            
+            <ul class="md-post__meta md-nav__list">
+              <li class="md-nav__item md-nav__item--section">
+                <div class="md-post__title">
+                  <span class="md-ellipsis">
+                    Metadata
+                  </span>
+                </div>
+                <nav class="md-nav">
+                  <ul class="md-nav__list">
+                    <li class="md-nav__item">
+                      <div class="md-nav__link">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5z"/></svg>
+                        <time datetime="2019-10-29 00:00:00+00:00" class="md-ellipsis">October 29, 2019</time>
+                      </div>
+                    </li>
+                    
+                    
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 3v15h3V3zm3 2 4 13 3-1-4-13zM5 5v13h3V5zM3 19v2h18v-2z"/></svg>
+                          <span class="md-ellipsis">
+                            in
+                            
+                              <a href="../../../../category/iot/">iot</a>, 
+                              <a href="../../../../category/laboratory/">laboratory</a>, 
+                              <a href="../../../../category/automation/">automation</a></span>
+                        </div>
+                      </li>
+                    
+                    
+                      
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"/></svg>
+                          <span class="md-ellipsis">
+                            
+                              7 min read
+                            
+                          </span>
+                        </div>
+                      </li>
+                    
+                  </ul>
+                </nav>
+              </li>
+            </ul>
+          </nav>
+          
+        </div>
+      </div>
+    </div>
+    <article class="md-content__inner md-typeset">
+      
+        
+
+
+<h1 id="sila-2-hands-on-bringing-automation-to-the-laboratory">SiLA 2 hands on : bringing automation to the laboratory</h1>
+<p>Ever heard about SiLA ? It stands for Standard in Lab Automation, and if you’re not working in automation of life science laboratories, you are probably hearing about this for the first time. In this blog post I will introduce you the benefits of SiLA 2 (the latest version of the standard) and show a hands-on example how the standard can help and simplify laboratory equipment integration into your IT systems.</p>
+<p><img alt="Image title" src="../../../../images/sila2_1.webp" /></p>
+<h2 id="lets-set-the-scene">Let’s set the scene</h2>
+<p>In a perfect world all your equipment would provide the same way of controlling the functions and accessing the data. Integrating the equipment into your IT landscape would become both consistent and less tedious.</p>
+<p>Sadly, until now, several issues may occur :</p>
+<!-- more -->
+
+<ul>
+<li>Your equipment was not designed to be integrated into any IT system and you are left with no choice than to live with it or purchase new equipment</li>
+<li>Your equipment has some kind of interface but very few of its capacities are exposed to interact with. You may not even be able to extract the data it produces</li>
+<li>In the best case, you have a set of integration points covering most of the device functionalities, well documented and written in modern, non-proprietary language</li>
+<li>Unfortunately, even if you reach the best case scenario you would still have to write a custom piece of software for each and every equipment you have. It would result in a huge library of disparate implementations for various equipment with no common ground.</li>
+</ul>
+<h2 id="solving-the-integration-issues-with-sila-2">Solving the integration issues with SiLA 2</h2>
+<p>SiLA 2 is a communication standard for laboratory instruments, such as readers, liquid handling robots and chromatography and other analytical equipment. However, with the new 2nd version of SiLA, it can also be used as a communication protocol between any microservices, even completely virtual. This makes it possible to track, monitor and even remote control assets, which makes it also capable in manufacturing use cases.</p>
+<p>Additionally, the SiLA 2 standard is self descriptive, which means that by connecting to the interface, you or any software could learn exactly what the device can do and how to use it. This makes it possible to create software tools that can readily operate any SiLA 2 supported instrument without drivers or configurations.</p>
+<h2 id="client-server-concept">Client - Server concept</h2>
+<p>It is based on a client — server communication model where the server exposes it’s capabilities to all clients in a consistent way. The interactions with the server (e.g. an incubator) are grouped into SiLA Features. Each Feature (e.g. shaking or temperature control) encompasses commands and data outlets related to the same instrument capability.</p>
+<p><img alt="Image title" src="../../../../images/sila2_2.webp" /></p>
+<h2 id="feature-definitions">Feature definitions</h2>
+<p>Servers can implement a set of features that the client can use selectively based on the use case. The client could be a LIMS system, requesting system or an inventory management system. Even another lab instrument could be a client to communicate to the next device in the lab workflow, thus enabling device to device communication, robotic integration and closed-loop feedback. One example would be a scale asking a barcode reader the ID of the current sample and humidity from a sensor to associate with the weight measurement.</p>
+<p><img alt="Image title" src="../../../../images/sila2_3.webp" /></p>
+<p>The features of a device (that is, a SiLA server) are described using an XML file where the functionality is described using:</p>
+<p>Properties: data values that can be static (e.g. serial number) or dynamic (e.g. current temperature)
+Commands: an interaction to control or pass information to/from the SiLA Server
+Parameters: expected information required to execute the command
+Return values: expected output of the command
+Errors: expected errors that might occur during the operation
+For example you could have an automated freezer with a tube storage feature with a “Get tube”command that takes a parameter “Tube IDs” as list a of strings and as returns the “Destination” as a position of the tubes on the output rack.</p>
+<h1 id="automated-server-and-feature-discovery">Automated server and feature discovery</h1>
+<p>The SiLA protocol also comes with a zero configuration discovery service which allows a client to broadcast a message to discover all available servers and their associated features. This is the perfect match if you are in a very dynamic environment where instruments are often relocated from one system or laboratory to another.</p>
+<h1 id="and-many-more">And many more…</h1>
+<p>The SiLA standard defines many more capabilities but it also standardized features so that all providers could stick to the same common commands and interactions. Examples of further capabilities provided by SiLA 2:</p>
+<p>Data types and transport
+Encryption and authentication
+Property subscription
+Command progress updates
+Instrument locking etc.
+There’s a lot to explore with SiLA 2 and I have included links in the end of the article for you to read more. Now that we are familiar with the basic SiLA 2 concepts, let’s get our hands on the SiLA protocol. We are going to implement the automated storage as an example to see how it works in practice.</p>
+<h2 id="building-a-simple-storage-system-sila-2-driver">Building a simple storage system SiLA 2 driver</h2>
+<p>There are many tools and examples available in the SiLA 2 repository that help new developers get started. For instance, I’ll start developing the automated storage server from the hello_sila example project and modify it to fit my needs. The full code for this example is available here : https://github.com/mcroissant/sila_simple_storage</p>
+<p>The follow up section may be technical and Java focused but you can find many resources for other languages directly on the SiLA 2 repositories : https://gitlab.com/SiLA2</p>
+<h3 id="creating-a-feature">Creating a feature</h3>
+<p>The first step in developing a SiLA 2 server is to create the feature definition which all server-client interactions will be based.</p>
+<p>Our feature contains a simple command with no response and a simple parameter. The interactions could of course get more sophisticated using structures and more complex return values, but that will be a story for the next article.</p>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;</span>
+<span class="nt">&lt;Feature</span><span class="w"> </span><span class="na">SiLA2Version=</span><span class="s">&quot;0.1&quot;</span><span class="w"> </span><span class="na">FeatureVersion=</span><span class="s">&quot;1.0&quot;</span><span class="w"> </span><span class="na">Originator=</span><span class="s">&quot;org.silastandard&quot;</span><span class="w"> </span><span class="na">Category=</span><span class="s">&quot;examples&quot;</span>
+<span class="w">         </span><span class="na">xmlns=</span><span class="s">&quot;http://www.sila-standard.org&quot;</span>
+<span class="w">         </span><span class="na">xmlns:xsi=</span><span class="s">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span>
+<span class="w">         </span><span class="na">xsi:schemaLocation=</span><span class="s">&quot;http://www.sila-standard.org https://gitlab.com/SiLA2/sila_base/raw/master/schema/FeatureDefinition.xsd&quot;</span><span class="nt">&gt;</span>
+<span class="w">    </span><span class="nt">&lt;Identifier&gt;</span>AutomatedStorage<span class="nt">&lt;/Identifier&gt;</span>
+<span class="w">    </span><span class="nt">&lt;DisplayName&gt;</span>Automated<span class="w"> </span>Storage<span class="nt">&lt;/DisplayName&gt;</span>
+<span class="w">    </span><span class="nt">&lt;Description&gt;</span>Feature<span class="w"> </span>allowing<span class="w"> </span>to<span class="w"> </span>interact<span class="w"> </span>with<span class="w"> </span>automated<span class="w"> </span>storage<span class="w"> </span>remote<span class="w"> </span>controls<span class="nt">&lt;/Description&gt;</span>
+<span class="w">    </span><span class="nt">&lt;Command&gt;</span>
+<span class="w">        </span><span class="nt">&lt;Identifier&gt;</span>StoreRackWithNoContentCheck<span class="nt">&lt;/Identifier&gt;</span>
+<span class="w">        </span><span class="nt">&lt;DisplayName&gt;</span>Store<span class="w"> </span>Rack<span class="w"> </span>without<span class="w"> </span>checking<span class="w"> </span>content<span class="nt">&lt;/DisplayName&gt;</span>
+<span class="w">        </span><span class="nt">&lt;Description&gt;</span>Store<span class="w"> </span>a<span class="w"> </span>rack<span class="w"> </span>without<span class="w"> </span>checking<span class="w"> </span>for<span class="w"> </span>its<span class="w"> </span>content<span class="w"> </span>in<span class="w"> </span>term<span class="w"> </span>of<span class="w"> </span>mapping<span class="w"> </span>of<span class="w"> </span>tubes<span class="w"> </span>position<span class="nt">&lt;/Description&gt;</span>
+<span class="w">        </span><span class="nt">&lt;Observable&gt;</span>No<span class="nt">&lt;/Observable&gt;</span>
+<span class="w">        </span><span class="nt">&lt;Parameter&gt;</span>
+<span class="w">            </span><span class="nt">&lt;Identifier&gt;</span>RackBarcode<span class="nt">&lt;/Identifier&gt;</span>
+<span class="w">            </span><span class="nt">&lt;DisplayName&gt;</span>Rack<span class="w"> </span>Barcode<span class="nt">&lt;/DisplayName&gt;</span>
+<span class="w">            </span><span class="nt">&lt;Description&gt;</span>The<span class="w"> </span>barcode<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>rack<span class="w"> </span>that<span class="w"> </span>will<span class="w"> </span>be<span class="w"> </span>inserted<span class="w"> </span>into<span class="w"> </span>the<span class="w"> </span>automated<span class="w"> </span>freezer<span class="nt">&lt;/Description&gt;</span>
+<span class="w">            </span><span class="nt">&lt;DataType&gt;</span>
+<span class="w">                </span><span class="nt">&lt;Basic&gt;</span>String<span class="nt">&lt;/Basic&gt;</span>
+<span class="w">            </span><span class="nt">&lt;/DataType&gt;</span>
+<span class="w">        </span><span class="nt">&lt;/Parameter&gt;</span>
+<span class="w">    </span><span class="nt">&lt;/Command&gt;</span>
+<span class="nt">&lt;/Feature&gt;</span>
+</code></pre></div>
+<p>As you can see feature definition are self explanatory files written in a comprehensive XML format. The feature file will be validated and further used to generate the exchanged messages between server and client.</p>
+<h3 id="adding-the-feature-to-the-server">Adding the feature to the server</h3>
+<p>Adding a feature to a server is relatively easy and is a one line as you can see just below. From now on our server would expose this as one of its features and advertise it to clients asking what the server is capable of.</p>
+<div class="highlight"><pre><span></span><code><span class="w">  </span><span class="n">builder</span><span class="p">.</span><span class="na">addFeature</span><span class="p">(</span>
+<span class="w">      </span><span class="s">&quot;org.silastandard/examples/v1/AutomatedStorage&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="n">getResourceContent</span><span class="p">(</span><span class="s">&quot;AutomatedStorage.sila.xml&quot;</span><span class="p">),</span>
+<span class="w">      </span><span class="k">new</span><span class="w"> </span><span class="n">AutomatedStorageImpl</span><span class="p">()</span>
+<span class="p">);</span>
+</code></pre></div>
+<h3 id="implementing-the-feature">Implementing the feature</h3>
+<p>As the base of the feature as already been generated automatically by the SiLA protocol what’s left for us to do is to extend the functionality of this base implementation. If you want to know more about the automated code generation please leave a comment on this could be an interesting starting point for the following article.</p>
+<p>The example below shows what the minimum implementation could look like with input parameter validation and error responses as well as response construction.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">package</span><span class="w"> </span><span class="nn">sila_java.servers.automated_freezer.automated_storage</span><span class="p">;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">sila2.org.silastandard.examples.automatedstorage.v1.AutomatedStorageGrpc</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sila2.org.silastandard.examples.automatedstorage.v1.AutomatedStorageOuterClass</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sila_java.library.core.sila.types.SiLAErrors</span><span class="p">;</span>
+
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">AutomatedStorageImpl</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">AutomatedStorageGrpc</span><span class="p">.</span><span class="na">AutomatedStorageImplBase</span><span class="p">{</span>
+
+<span class="w">    </span><span class="cm">/**</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="nd">@Override</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">storeRackWithNoContentCheck</span><span class="p">(</span><span class="n">sila2</span><span class="p">.</span><span class="na">org</span><span class="p">.</span><span class="na">silastandard</span><span class="p">.</span><span class="na">examples</span><span class="p">.</span><span class="na">automatedstorage</span><span class="p">.</span><span class="na">v1</span><span class="p">.</span><span class="na">AutomatedStorageOuterClass</span><span class="p">.</span><span class="na">StoreRackWithNoContentCheck_Parameters</span><span class="w"> </span><span class="n">request</span><span class="p">,</span>
+<span class="w">                                            </span><span class="n">io</span><span class="p">.</span><span class="na">grpc</span><span class="p">.</span><span class="na">stub</span><span class="p">.</span><span class="na">StreamObserver</span><span class="o">&lt;</span><span class="n">sila2</span><span class="p">.</span><span class="na">org</span><span class="p">.</span><span class="na">silastandard</span><span class="p">.</span><span class="na">examples</span><span class="p">.</span><span class="na">automatedstorage</span><span class="p">.</span><span class="na">v1</span><span class="p">.</span><span class="na">AutomatedStorageOuterClass</span><span class="p">.</span><span class="na">StoreRackWithNoContentCheck_Responses</span><span class="o">&gt;</span><span class="w"> </span><span class="n">responseObserver</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+
+
+<span class="w">        </span><span class="cm">/*</span>
+<span class="cm">        Different parameters can be checked, it is mandatory to throw Validation Errors in case of</span>
+<span class="cm">        missing parameters, which will be done automatically in the future.</span>
+<span class="cm">        */</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">request</span><span class="p">.</span><span class="na">hasRackBarcode</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">responseObserver</span><span class="p">.</span><span class="na">onError</span><span class="p">(</span><span class="n">SiLAErrors</span><span class="p">.</span><span class="na">generateValidationError</span><span class="p">(</span>
+<span class="w">                    </span><span class="s">&quot;Rack Barcode&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="s">&quot;Rack barcode parameter was not set&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="s">&quot;Specify a barcode with at least one character&quot;</span><span class="p">));</span>
+<span class="w">            </span><span class="k">return</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="cm">/**</span>
+<span class="cm">         * TODO implement any behaviour needed on the server side for the equipment</span>
+<span class="cm">         */</span>
+
+<span class="w">        </span><span class="n">AutomatedStorageOuterClass</span><span class="p">.</span><span class="na">StoreRackWithNoContentCheck_Responses</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span>
+<span class="w">                </span><span class="n">AutomatedStorageOuterClass</span><span class="p">.</span><span class="na">StoreRackWithNoContentCheck_Responses</span>
+<span class="w">                        </span><span class="p">.</span><span class="na">newBuilder</span><span class="p">()</span>
+<span class="w">                        </span><span class="p">.</span><span class="na">build</span><span class="p">();</span>
+
+<span class="w">        </span><span class="n">responseObserver</span><span class="p">.</span><span class="na">onNext</span><span class="p">(</span><span class="n">result</span><span class="p">);</span>
+<span class="w">        </span><span class="n">responseObserver</span><span class="p">.</span><span class="na">onCompleted</span><span class="p">();</span>
+
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="launching-our-server">Launching our server</h3>
+<p>Once our server is compiled and launched we can use a free tool provided by UniteLabs allowing our browser to act as a SiLA client you can download it freely here : <a href="https://unitelabs.ch/technology/plug-and-play/try-it-out?utm_source=medium&amp;utm_medium=content&amp;utm_campaign=matthieu_croissant">link</a></p>
+<p>Automatically created interface of our server feature within SiLA Browser
+From there we could directly control our automated storage and tell it to store a given rack. This interface is quite useful for development and debugging but as stated before you would probably integrate your freezer directly with an other system like your inventory or your LIMS.</p>
+<h2 id="wrapping-up">Wrapping up</h2>
+<p>We have just scratched the surface of the SiLA 2 protocol and it is very promising as the manufacturer adoption is rising we will be able to leverage the benefits of it and integrate new equipment faster and in a more consistent way.</p>
+<p>I am writing another article on the subject and will provide a full fledged implementation of the automated storage case so that it can serve as a demo. Let me know if you are interested.</p>
+<h2 id="want-to-know-more-on-sila">Want to know more on SiLA ?</h2>
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+
+
+  
+
+
+
+      
+    </article>
+  </div>
+
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../../../../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.tracking", "toc.follow", "content.code.copy"], "search": "../../../../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../../../../assets/javascripts/bundle.88dd0f4e.min.js"></script>
+      
+    
+  </body>
+</html>
